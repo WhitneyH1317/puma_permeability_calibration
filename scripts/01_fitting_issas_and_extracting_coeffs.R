@@ -5,13 +5,9 @@ rm(list = ls())
 library(amt)
 library(tidyverse)
 library(lubridate)
-library(spdep)
 library(survival)
-library(rasterVis)
 library(corrplot)
-library(pROC)   # For ROC analysis
-library(dismo)  # For k-fold cross-validation (to split the data)
-library(MASS)   # For logistic regression models (if used)
+
 # Run git lfs pull to fetch large files before loading
 system("git lfs pull")
 # load data
@@ -124,11 +120,7 @@ kfoldSSF<- function(mod, k, nrepet, jitter, reproducible){
     names(dt)[nclu] <- sub("cluster\\((.*)\\)", "\\1",
                            names(dt)[nclu])
   }
-  ## Is it really a problem?
-  ## ncase <- table(tapply(dt$srv[, 2], dt[, nstr], function(x) sum(x == 1)))
-  ## if (any(names(ncase) == "0"))
-  ##     stop(paste("Some stratas had no case.",
-  ##       "It is likely that NAs were present in the variables for some cases."))
+
   ## Prepare the 'kfold', 'rd' and 'warn' objects
   kfold <- rd <- warn <- numeric(length = 100)
   
