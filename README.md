@@ -43,6 +43,102 @@ This repository is prepared to be published on Dryad alongside the associated ma
 
 ---
 
+## ## Data Metadata for Puma Permeability Calibration Repository
+
+This section provides descriptions and usage notes for the main data files stored in the `data/`, `tmp/`, and `output/` folders within this repository.
+
+
+## `data/` Folder
+
+### `implicit_data.rda`
+- Key data frames include:
+  - `implicit_used_control`: Individual IDs (`pumaID`), step ID (`end_gpsID`), step length, log of step length, turning angle, case/control indicators (`case_`), control point id (`avail_id`), and habitat covariates for associated steps. Habitat covariates include slope, tree/shrub cover (`cover`), a kernel density estimation of building density at a 150m bandwidth (`hd_150`), proximity to urban edge (`prox_urbanedge`), and landcover designation (natural or anthropogenic; `landcover_simp`)
+    - habitat covariates come from publicly available landcover data, including ICLUS (for `landcover_simp`), TIGER (`prox_urbanedge`), Microsoft's GlobalMLBuildingFootprints (`hd_150`), slope taken from a DEM model calculated by the National Elevation Dataset (`slope`), and percent tree/shrub cover calculated from California GAP data (`cover`). 
+    - Contains cleaned, 3-hour resolution puma movement data from 84 individual pumas, collared between 2009 and 2024, used for integrated step selection function (iSSF) modeling to estimate habitat selection and movement behavior parameters.  
+  - `scaling_averages`: contains the average covariate values across all environmental data in the Santa Cruz mountains study area
+    - used to mean-center and scale covariates before model fitting
+  - `scaling_sds`: contains the standard deviation of all covariate values across all environmental data in the Santa Cruz mountains study area
+      - used to mean-center and scale covariates before model fitting\
+
+
+- Loaded in `01_fitting_issas_and_extracting_coeffs.R`.
+
+### env.rda
+- Includes spatial data needed for preparing spatial projections, including designating traffic/city masks, reclassifying landcover layers, and designating seed habitat for EcoScape
+- Key data includes:
+  - `iclus key`: a dataset with the code (pixel values in the `lulc_current` raster layer), corresponding group and class names, and the simplified landcover designation used to describe a landcover type as "natural" (1) or "anthropogenic" (2). Designation for codes to class names was communicated via personal email from Phillip Moorefield. Dataset is used to reclassify `lulc_current` raster layer to 1/2 distribution.
+  - `lulc_current` described above
+  - `r` is a rasterized MCP containing all known GPS locations (same locations of used steps in `implicit_used_control`)
+  - `road_shp`: spatial features object of all known paved roads, extracted from TIGER
+  - `sc_protected`: spatial features object of all protected areas in Santa Cruz, taken from California Protected Areas Database
+  - `stk`: raster stack containing raw environmental data described as habitat covariates in `implicit_used_control`
+  - `traffic`: spatial features object of spatially-explicit traffic counts per road segment, taken from Average Annual Daily Traffic from California State GeoPortal
+
+
+- Loaded in `02_projection_data_prep.R`.
+
+---
+
+## `tmp/` Folder
+
+### `ind_coefs_and_weights.rda`
+
+- Stores extracted individual-level coefficient estimates (`coef_db`) and weighted coefficients summary (`weighted_df`) from iSSF models fitted in `01_fitting_issas_and_extracting_coeffs.R`.  
+- Also contains unnormalized weight matrices for males and females (`weights_m_unnorm`, `weights_f_unnorm`).  
+- Used for downstream inference about sex-specific behavioral parameters and population-level coefficients.
+
+
+- Loaded in `03_tolerance_permeability_projections.R` and `04_figures2&s1.R`
+
+
+### `data_for_projections.rda`
+
+- Stores results from `02_projection_data_prep.R` including processed masks e.g. urban (`city_mask`) and weighted roads mask (with traffic values; `weight_mask`).  
+- Contains `design_matrix`, created with "new data" that is all environmental raster data (from `stk`) that spans entirety of Central California, but mean-scaled and centered based on averages and standard deviations calculated in Santa Cruz's study area (`scaling_averages` and `scaling_sds`)
+- `r_final_masked` which is an updated version of `r` that only includes protected areas and excludes pixels overlapping with roads (`roads_shp`)
+- a reclassified version of `lulc_current`, called `lulc_current_reclassed`
+- Used for projecting sex- and tolerance-specific coefficients to calibrate permeability layers, and for visualizing spread of coefficients by tolerance/sex in figures
+
+
+- Loaded in `03_tolerance_permeability_projections.R`
+
+
+### `tolerance_specific_pumas.rda`
+
+- Stores the sex- and toleranace-specific puma coefficient values designated in the beginning of `03_tolerance_permeability_projections.R`
+- Used for visualizing spread of coefficients by tolerance/sex in figures
+
+- Loaded in `04_figures2&s1.R`.
+
+
+---
+
+## `output/` Folder
+
+- Contains generated figures from the analysis pipeline. 
+- Serves as the primary location for saving processed results to aid reproducibility and reporting.
+
+---
+
+## Notes:
+
+- Some files in `data/` are large and managed through Git LFS. Be sure to run `git lfs pull` before your workflow to download large data objects.  
+- All `.rda` files are binary R data objects. Load them in R using `load("filename.rda")`.  
+- File structure and naming are chosen to help trace data transformations from raw movement data to fitted model results and visual summaries.
+
+---
+
+## Suggested Usage
+
+- Start analyses by loading data objects from the `data/` folder.  
+- Intermediate results and model coefficients are saved to the `tmp/` folder to enable modular workflow execution.  
+- Final outputs, including figures and tables suitable for manuscript or presentation, are saved in `output/`.
+
+---
+
+This metadata document can be placed in the root of the repository as `DATA_METADATA.Rmd` or integrated into the main README under a **Data Resources** or **Data Overview** section for easier reference by users and collaborators.
+
+
 ## Contact
 For questions or more information, contact Whitney Hansen at whitney.hansen@tamuk.edu
 
