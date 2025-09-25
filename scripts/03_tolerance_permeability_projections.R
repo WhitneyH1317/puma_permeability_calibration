@@ -96,6 +96,10 @@ get_coefficients <- function(weighted_df, var, quantile, sex) {
    rename(landcover_simp2 = landcover_simphuman_mean) %>%
    arrange(tolerance_category)) 
 
+#### save objects for plotting ####
+save(real_f_pumas_combined_forplot, real_m_pumas_combined_forplot, 
+     file = "tmp/tolerance_specific_pumas.rda")
+
 #### remove extraneous column and rename ####
 real_f_pumas_combined<- real_f_pumas_combined_forplot %>% 
   dplyr::select(-c(pumas)) %>% 
@@ -230,26 +234,69 @@ p<- ggplot(df_all, aes(x = x, y = y, fill = Permeability)) +
 print(p)
 ggsave("output/figure3.png", plot = p, width = 20, height = 8, dpi = 1000)
 
-
 #### save rasters for inputting into EcoScape ####
-setwd("rasters_for_collab")
+# Helper function to create directory if not exists
+create_dir_if_missing <- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+    message("Created folder: ", path)
+  } else {
+    message("Folder already exists: ", path)
+  }
+}
 
-writeRaster(predict_rasters_f[[1]], filename = "perm_rasters_female/permeability_high_fem_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
-writeRaster(predict_rasters_f[[2]], filename = "perm_rasters_female/permeability_mix_fem_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
-writeRaster(predict_rasters_f[[3]], filename = "perm_rasters_female/permeability_low_fem_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
+# Date-stamped folder name: gives us "data version" for multiple iterations
+folder_name <- format(Sys.Date(), "%Y-%m-%d")
+# Base directory
+parent_dir <- "rasters_for_collab"
+# Full paths for main and subfolders
+new_folder_path <- file.path(parent_dir, folder_name)
+new_folder_path_female <- file.path(new_folder_path, "perm_rasters_female")
+new_folder_path_male <- file.path(new_folder_path, "perm_rasters_male")
+# Create directories (will create parent+child if needed with recursive=TRUE)
+create_dir_if_missing(new_folder_path_female)
+create_dir_if_missing(new_folder_path_male)
 
-# males
-writeRaster(predict_rasters_m[[1]], filename = "perm_rasters_male/permeability_high_mal_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
-writeRaster(predict_rasters_m[[2]], filename = "perm_rasters_male/permeability_mix_mal_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
-writeRaster(predict_rasters_m[[3]], filename = "perm_rasters_male/permeability_low_mal_raw.tif", format = "GTiff", 
-            overwrite = TRUE)
+# Write rasters using full paths
+## females
+writeRaster(
+  predict_rasters_f[[1]],
+  filename = file.path(new_folder_path_female, "permeability_high_fem_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
+writeRaster(
+  predict_rasters_f[[2]],
+  filename = file.path(new_folder_path_female, "permeability_mix_fem_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
+writeRaster(
+  predict_rasters_f[[3]],
+  filename = file.path(new_folder_path_female, "permeability_low_fem_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
 
-#### save objects for plotting ####
-save(real_f_pumas_combined_forplot, real_m_pumas_combined_forplot, 
-     file = "tmp/tolerance_specific_pumas.rda")
+## males
+writeRaster(
+  predict_rasters_m[[1]],
+  filename = file.path(new_folder_path_male, "permeability_high_mal_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
+writeRaster(
+  predict_rasters_m[[2]],
+  filename = file.path(new_folder_path_male, "permeability_mix_mal_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
+writeRaster(
+  predict_rasters_m[[3]],
+  filename = file.path(new_folder_path_male, "permeability_low_mal_raw.tif"),
+  format = "GTiff",
+  overwrite = TRUE
+)
+
+
 
