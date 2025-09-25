@@ -134,13 +134,13 @@ This section provides descriptions and usage notes for the main data files store
 
 ## Suggested Usage
 
-- Start analyses by loading data objects from the `data/` folder.  
+- Start analyses by beginning with script starting with "01", and loading data objects from the `data/` folder.
+- Continue running script sequentially. 
 - Intermediate results and model coefficients are saved to the `tmp/` folder to enable modular workflow execution.  
-- Final outputs, including figures and tables suitable for manuscript or presentation, are saved in `output/`.
+- Final outputs, including figures and tables suitable for manuscript or presentation, are saved in `output/` and `rasters_for_collab `.
 
 ---
 
-This metadata document can be placed in the root of the repository as `DATA_METADATA.Rmd` or integrated into the main README under a **Data Resources** or **Data Overview** section for easier reference by users and collaborators.
 
 
 ## Contact
