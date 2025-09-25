@@ -12,10 +12,10 @@ library(corrplot)
 library(pROC)   # For ROC analysis
 library(dismo)  # For k-fold cross-validation (to split the data)
 library(MASS)   # For logistic regression models (if used)
-
+# Run git lfs pull to fetch large files before loading
+system("git lfs pull")
 # load data
-load("~/data/implicit_data.rda")
-
+load("data/implicit_data.rda")
 # get movement data attributes
 move_scaling<- implicit_used_control %>%
   group_by(pumaID) %>%
@@ -411,5 +411,6 @@ weighted_df <- weighted_df[, desired_order] %>%
 print(weighted_df)
 
 #### save weighted data ####
-save(coef_db, weighted_df, weights_m_unnorm, weights_f_unnorm, file = "~/tmp/ind_coefs_and_weights.rda")
+save(coef_db, weighted_df, weights_m_unnorm, weights_f_unnorm, 
+     file = "tmp/ind_coefs_and_weights.rda")
 
