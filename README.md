@@ -43,7 +43,11 @@ This repository is prepared to be published on Dryad alongside the associated ma
 
 ---
 
-### Data Metadata for Puma Permeability Calibration Repository
+---
+
+---
+
+## Data Metadata for Puma Permeability Calibration Repository
 
 This section provides descriptions and usage notes for the main data files stored in the `data/`, `tmp/`, and `output/` folders within this repository.
 
