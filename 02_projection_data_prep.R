@@ -1,4 +1,4 @@
-#### prepare future projection spatial data ####
+#### prepare spatial data for projections ####
 
 rm(list =ls())
 # load libraries
@@ -12,9 +12,11 @@ library(lwgeom)
 
 # useful function
 `%!in%`<- Negate('%in%')
+# Run git lfs pull to fetch large files before loading
+system("git lfs pull")
 # load data
-load("~/data/env.rda")
-load("~/data/implicit_data.rda")
+load("data/env.rda")
+load("data/implicit_data.rda")
 # generate mean movement metrics
 means<- implicit_used_control %>%
   summarize(mean_step_dist = mean(step_dist),
@@ -106,7 +108,7 @@ road_presence <- !is.na(weight_mask)
 # Set r_final values to NA where road pixels are present
 r_final_masked <- mask(raster(r_masked), road_presence, maskvalue = 1)
 # now write it for use in googlecolab
-writeRaster(r_final_masked, "~/output/puma_pop_seed_raster.tif",
+writeRaster(r_final_masked, "output/puma_pop_seed_raster.tif",
             overwrite = T)
 
 #### generate new data to be used in projections ####
