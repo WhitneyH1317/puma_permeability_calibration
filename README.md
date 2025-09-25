@@ -43,7 +43,7 @@ This repository is prepared to be published on Dryad alongside the associated ma
 
 ---
 
-## ## Data Metadata for Puma Permeability Calibration Repository
+### Data Metadata for Puma Permeability Calibration Repository
 
 This section provides descriptions and usage notes for the main data files stored in the `data/`, `tmp/`, and `output/` folders within this repository.
 
@@ -63,7 +63,7 @@ This section provides descriptions and usage notes for the main data files store
 
 - Loaded in `01_fitting_issas_and_extracting_coeffs.R`.
 
-### env.rda
+### `env.rda`
 - Includes spatial data needed for preparing spatial projections, including designating traffic/city masks, reclassifying landcover layers, and designating seed habitat for EcoScape
 - Key data includes:
   - `iclus key`: a dataset with the code (pixel values in the `lulc_current` raster layer), corresponding group and class names, and the simplified landcover designation used to describe a landcover type as "natural" (1) or "anthropogenic" (2). Designation for codes to class names was communicated via personal email from Phillip Moorefield. Dataset is used to reclassify `lulc_current` raster layer to 1/2 distribution.
