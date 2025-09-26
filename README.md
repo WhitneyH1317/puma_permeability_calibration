@@ -147,7 +147,7 @@ The final script `06_EcoScape_run` is a Colab notebook which extends the current
 
 - Automatically clones this GitHub repository within the Colab environment.
 
-- Installs the ecoscape-connectivity Python package, which provides the EcoScape model for habitat connectivity.
+- Installs the ecoscape-connectivity Python package (Pip install ecoscape_connectivity==0.2.5), which provides the EcoScape model for habitat connectivity.
 
 - Runs the signature compute_connectivity function from ecoscape to perform rigorous connectivity and flow calculations on spatial raster data.
 
