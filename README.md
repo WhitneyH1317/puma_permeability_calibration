@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the data, code, and analysis scripts for calibrating permeability layers to upload into EcoScape. It includes spatial data, R data objects, and figure outputs supporting our ecological research.
+This repository contains the data, code, and analysis scripts for calibrating permeability layers to upload into EcoScape. It includes spatial data, R data objects, and figure outputs supporting our ecological research, as well as a Google Colab notebook script for running EcoScape's "compute_connectivity" function on permeability layer outputs. This Google Collab notebook integration complements established R-based workflows by offering a cloud-hosted, reproducible, and GPU-accelerated option optimized for cutting-edge connectivity modeling.
 
 ## Data Description
 
@@ -141,6 +141,21 @@ This section provides descriptions and usage notes for the main data files store
 
 ---
 
+## Google Colab GPU Workflow Extension
+
+The final script `06_EcoScape_run` is a Colab notebook which extends the current RStudio-based repository workflows by leveraging GPU acceleration to run large-scale spatial ecological analyses efficiently. Key features include:
+
+- Automatically clones this GitHub repository within the Colab environment.
+
+- Installs the ecoscape-connectivity Python package, which provides the EcoScape model for habitat connectivity.
+
+- Runs the signature compute_connectivity function from ecoscape to perform rigorous connectivity and flow calculations on spatial raster data.
+
+- Saves outputs locally within Colab, zips all results, and facilitates easy download to the user's local machine.
+
+# Requirements:
+
+- Google Colab Pro or Pro+ for access to high-memory GPUs like A100 or NVIDIA L4 to handle computational demands.
 
 
 ## Contact
